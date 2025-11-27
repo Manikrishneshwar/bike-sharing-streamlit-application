@@ -27,3 +27,25 @@ with col2:
     st.metric(label='Stations w Available E-bikes',value=len(data[data['ebike']>0]))
 with col3:
     st.metric(label='Stations w Empty Docks',value=len(data[data['num_docks_available']>0]))
+    
+#folium map centered around the city of Toronto
+center=[43.65306613746548,-79.38815311015] #coords for toronto
+m=folium.Map(location=center,zoom_start=13,tiles='cartodbpositron') #create map with grey background
+
+for _,row in data.iterrows():
+    marker_color=get_marker_color(row['num_bikes_available'])
+    folium.CircleMarker(
+        location=[row['lat'],row['lon']],
+        radius=2,
+        color=marker_color,
+        fill=True,
+        fill_color=marker_color,
+        fill_opacity=0.7,
+        popup=folium.Popup(f"Station ID: {row['station_id']}<br>"
+                        f"Total Bikes Available: {row['num_bikes_available']}<br>"
+                        f"Mechanical Bikes Available: {row['mechanical']}<br>"
+                        f"E-bikes Available: {row['ebike']}",max_width=300)
+        ).add_to(m)
+    
+# display map in streamlit web app
+folium_static(m)

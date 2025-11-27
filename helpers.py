@@ -58,3 +58,33 @@ def join_latlon(df1, df2):
                 how='left', 
                 on='station_id')  # Merge the Dataframes on station_id
     return df  # Return the merged Dataframe
+
+# Function to determine marker color based on the number of bikes available
+def get_marker_color(num_bikes_available):
+    '''
+    Input params: number of bikes available
+    Return type: string
+    
+    Takes in the number of bikes available and return a color corresponding to some conditions based on number of bikes.
+    '''
+    if num_bikes_available > 3:
+        return 'green'
+    elif 0 < num_bikes_available <= 3:
+        return 'yellow'
+    else:
+        return 'red'
+
+# Define the function to geocode an address
+def geocode(address):
+    '''
+    Input parameter: Address (string of format "<street name> <city name> <country name>")
+    Return type: Tuple (Latitude, Longitude) OR None
+    
+    Uses geolocator to locate an address and return the cordinates if found. Else None is returned.
+    '''
+    geolocator = Nominatim(user_agent="clicked-demo")  # Create a geolocator object
+    location = geolocator.geocode(address)  # Geocode the address
+    if location is None:
+        return ''  # Return an empty string if the address is not found
+    else:
+        return (location.latitude, location.longitude)  # Return the latitude and longitude
