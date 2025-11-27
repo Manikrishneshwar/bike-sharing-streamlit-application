@@ -7,6 +7,6 @@ Toronto Bike Share publishes extensive open data, but it can be difficult to exp
 
 ## Data Source
 Toronto Bike Share open datasets from the official Toronto Open Data portal.
-Open Data portal of Toronto: [text](https://open.toronto.ca)
-Bike share Toronto: [text](https://open.toronto.ca/dataset/bike-share-toronto/)
+Open Data portal of Toronto: [https://open.toronto.ca](https://open.toronto.ca)
+Bike share Toronto: [https://open.toronto.ca/dataset/bike-share-toronto/](https://open.toronto.ca/dataset/bike-share-toronto/)
 
