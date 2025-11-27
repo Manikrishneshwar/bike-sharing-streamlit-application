@@ -1,0 +1,35 @@
+name: bike_sharing
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # core
+  - python=3.10
+  - pip
+  - ipykernel
+  - jupyterlab
+
+  # scientific + geo stuff
+  - numpy
+  - pandas
+  - geopandas
+  - shapely
+  - pyproj
+  - folium
+  - matplotlib
+  - requests
+
+  #streamlit for web app
+  - streamlit
+  - streamlit-folium
+
+  - psutil
+  - pyautogui
+
+  - pip:
+      - altair==5.3.0
+      - pydeck==0.9.1
+      - rich==13.7.1
+      - xyzservices==2024.4.0
+
+prefix: C:\Users\manik\anaconda3\envs\bike
