@@ -88,3 +88,84 @@ def geocode(address):
         return ''  # Return an empty string if the address is not found
     else:
         return (location.latitude, location.longitude)  # Return the latitude and longitude
+    
+# Define the function to get bike availability near a location
+def get_bike_availability(latlon, df, input_bike_modes):
+    """
+    Input parameters: Tuple->(Latitude,Longitude), dataframe, List
+    Return Type: List ->[station_id, Latitude, Longitude]
+    
+    Calculate distance from each station to the user and return closest viable station details
+    """
+    if len(input_bike_modes) == 0 or len(input_bike_modes) == 2:  # If no mode selected, assume both bikes are selected
+        i = 0
+        df['distance'] = ''
+        while i < len(df):
+            df.loc[i, 'distance'] = geodesic(latlon, (df['lat'][i], df['lon'][i])).km  # Calculate distance to each station
+            i = i + 1
+        df = df.loc[(df['ebike'] > 0) | (df['mechanical'] > 0)]  # Remove stations with no available bikes
+        chosen_station = []
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['station_id'].iloc[0])  # Get closest station
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['lat'].iloc[0])
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['lon'].iloc[0])
+    else:
+        i = 0
+        df['distance'] = ''
+        while i < len(df):
+            df.loc[i, 'distance'] = geodesic(latlon, (df['lat'][i], df['lon'][i])).km  # Calculate distance to each station
+            i = i + 1
+        df = df.loc[df[input_bike_modes[0]] > 0]  # Remove stations without the selected mode available
+        chosen_station = []
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['station_id'].iloc[0])  # Get closest station
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['lat'].iloc[0])
+        chosen_station.append(df[df['distance'] == min(df['distance'])]['lon'].iloc[0])
+    return chosen_station  # Return the chosen station
+
+# Define the function to get dock availability near a location
+def get_dock_availability(latlon, df):
+    """
+    Input parameters:Tuple with (Latitude,Longitude), Dataframe
+    Return Type: List ->[station_id, Latitude, Longitude]
+    
+    Calculate distance from each station to the user and return details of closest station station
+    """
+    i = 0
+    df['distance'] = ''
+    while i < len(df):
+        df.loc[i, 'distance'] = geodesic(latlon, (df['lat'][i], df['lon'][i])).km  # Calculate distance to each station
+        i = i + 1
+    df = df.loc[df['num_docks_available'] > 0]  # Remove stations without available docks
+    chosen_station = []
+    chosen_station.append(df[df['distance'] == min(df['distance'])]['station_id'].iloc[0])  # Get closest station
+    chosen_station.append(df[df['distance'] == min(df['distance'])]['lat'].iloc[0])
+    chosen_station.append(df[df['distance'] == min(df['distance'])]['lon'].iloc[0])
+
+    return chosen_station  # Return the chosen station
+
+# Define the function to run OSRM and get route coordinates and duration
+def run_osrm(chosen_station, iamhere):
+    '''
+    Input params: List->[station_id, Latitude, Longitude], Tuple->(Latitude,Longitude)
+    Return Type: List of coordinates, float duration
+    
+    Takes current position coords, and destination coords to calculate 
+    the route and the time taken to get to destination
+    '''
+    start = "{},{}".format(iamhere[1], iamhere[0])  # Format the start coordinates
+    end = "{},{}".format(chosen_station[2], chosen_station[1])  # Format the end coordinates
+    url = 'http://router.project-osrm.org/route/v1/driving/{};{}?geometries=geojson'.format(start, end)  # Create the OSRM API URL
+
+    headers = {'Content-type': 'application/json'}
+    r = requests.get(url, headers=headers)  # Make the API request
+    print("Calling API ...:", r.status_code)  # Print the status code
+
+    routejson = r.json()  # Parse the JSON response
+    coordinates = []
+    i = 0
+    lst = routejson['routes'][0]['geometry']['coordinates']
+    while i < len(lst):
+        coordinates.append([lst[i][1], lst[i][0]])  # Extract coordinates
+        i = i + 1
+    duration = round(routejson['routes'][0]['duration'] / 60, 1)  # Convert duration to minutes
+
+    return coordinates, duration  # Return the coordinates and duration
