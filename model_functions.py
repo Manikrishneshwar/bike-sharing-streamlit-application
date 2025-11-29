@@ -37,3 +37,30 @@ def read_data():
         return final
 
 
+def clean(data):
+    '''
+    Input-> Dataframe
+    Return Type-> Data frame
+    
+    Cleans the dataframe by removing duplicates, and converting timestamps into date time format.
+    creates separate column for easier access.
+    '''
+    df = data.copy()   # <--- fixes warning
+
+    df = df.drop_duplicates(subset=["Trip Id"])
+
+    # Convert the string datetime columns to actual datetimes
+    df["Start Time"] = pd.to_datetime(
+        df["Start Time"], format="%m/%d/%Y %H:%M", errors="coerce"
+    )
+    df["End Time"] = pd.to_datetime(
+        df["End Time"], format="%m/%d/%Y %H:%M", errors="coerce"
+    )
+
+    # Drop rows that failed to parse
+    df = df.dropna(subset=["Start Time", "End Time"])
+    df["start_hour"] = df["Start Time"].dt.hour
+    df["start_day"] = df["Start Time"].dt.day
+    df["start_month"] = df["Start Time"].dt.month
+    df["start_dow"] = df["Start Time"].dt.dayofweek
+    return df

@@ -10,4 +10,4 @@ Toronto Bike Share open datasets from the official Toronto Open Data portal.<br>
 Open Data portal of Toronto: [https://open.toronto.ca](https://open.toronto.ca)<br>
 Bike share Toronto: [https://open.toronto.ca/dataset/bike-share-toronto/](https://open.toronto.ca/dataset/bike-share-toronto/)<br>
 Bike share Toronto Ridership Data:[https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/](https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/)<br>
-
+The ridership data consists data from numerous years. The ones used in this project are all files corresponding to years 2020-2023 (both included) and the 1st file of 2024.
