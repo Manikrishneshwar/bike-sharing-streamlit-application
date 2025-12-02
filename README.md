@@ -11,3 +11,11 @@ Open Data portal of Toronto: [https://open.toronto.ca](https://open.toronto.ca)<
 Bike share Toronto: [https://open.toronto.ca/dataset/bike-share-toronto/](https://open.toronto.ca/dataset/bike-share-toronto/)<br>
 Bike share Toronto Ridership Data:[https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/](https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/)<br>
 The ridership data consists data from numerous years. The ones used in this project are all files corresponding to years 2020-2023 (both included) and the 1st file of 2024.
+
+## How to run
+Download the necessary data sets from the links above. <br>
+- Change the prefix in [environment.yml](environment.yml)
+- Run `conda env create -f environment.yml` to create a new environment. This may take a while.
+- Activate the new environment with `conda activate bike_sharing`.
+- Run the StreamLit web app with `streamlit run app.py`.
+- Open [StreamLit application on local host](http://localhost:8501)

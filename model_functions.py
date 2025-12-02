@@ -63,4 +63,5 @@ def clean(data):
     df["start_day"] = df["Start Time"].dt.day
     df["start_month"] = df["Start Time"].dt.month
     df["start_dow"] = df["Start Time"].dt.dayofweek
+    df["duration_min"] = (df["End Time"] - df["Start Time"]).dt.total_seconds()/60
     return df
