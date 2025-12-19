@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# dataset extensions
+*.csv
+
+#json test extensions
+*.json
+
 # Distribution / packaging
 .Python
 build/
