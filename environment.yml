@@ -23,6 +23,9 @@ dependencies:
   - streamlit
   - streamlit-folium
 
+  # Model training
+  - prophet
+
   - psutil
   - pyautogui
 

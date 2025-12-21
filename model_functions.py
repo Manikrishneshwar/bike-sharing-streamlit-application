@@ -43,7 +43,8 @@ def clean(data):
     Return Type-> Data frame
     
     Cleans the dataframe by removing duplicates, and converting timestamps into date time format.
-    creates separate column for easier access.
+    
+    Returns Series with y as number of trips started from each station in weekly timeline. (Multi Index)
     '''
     df = data.copy()   # <--- fixes warning
 
@@ -59,9 +60,10 @@ def clean(data):
 
     # Drop rows that failed to parse
     df = df.dropna(subset=["Start Time", "End Time"])
-    df["start_hour"] = df["Start Time"].dt.hour
-    df["start_day"] = df["Start Time"].dt.day
-    df["start_month"] = df["Start Time"].dt.month
-    df["start_dow"] = df["Start Time"].dt.dayofweek
-    df["duration_min"] = (df["End Time"] - df["Start Time"]).dt.total_seconds()/60
-    return df
+    # df["start_hour"] = df["Start Time"].dt.hour
+    # df["start_day"] = df["Start Time"].dt.day
+    # df["start_month"] = df["Start Time"].dt.month
+    # df["start_dow"] = df["Start Time"].dt.dayofweek
+    # df["duration_min"] = (df["End Time"] - df["Start Time"]).dt.total_seconds()/60
+    weekly_bins = df.groupby([pd.Grouper(key='Start Time', freq='W-MON'),'Start Station Id']).size()
+    return weekly_bins

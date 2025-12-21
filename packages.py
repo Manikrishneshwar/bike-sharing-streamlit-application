@@ -14,3 +14,5 @@ import requests  # Import requests for making HTTP requests
 
 import os
 from io import StringIO
+
+from prophet import Prophet
